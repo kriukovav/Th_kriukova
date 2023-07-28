@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.log
+.ipynb_checkpoints/
+*.rds
+data/minervina_reformated*
+data/pogorelyy2022_reformated*
+data/ngs/*
+data/vdjdb-2022-03-30/vdjdb_full_reformated.txt
+outs/*

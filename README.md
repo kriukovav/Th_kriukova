@@ -31,9 +31,9 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("edgeR")
 ```
-b) Please download our reference peripheral blood CD4 T lymphocytes scRNA-Seq dataset (link). This is an rds file containing an integrated Seurat object (full_reference_return_model.rds). Put it into outs/scRNAseq folder.    
+b) Please download our reference peripheral blood CD4 T lymphocytes scRNA-Seq dataset [full_reference_return_model.rds](https://figshare.com/projects/T_helper_subsets_Kriukova_et_al_/173466). This is an rds file containing an integrated Seurat object. Put this rds file into the outs/scRNAseq folder.    
 
-c) Please download the processed scRNA-Seq datasets from effector-memory CD4 T cells in D11 (links). These are rds files containing Seurat objects (full_reference_return_model.rds). Put it into outs/scRNAseq folder.    
+c) Please download the processed scRNA-Seq datasets: [D11_COVID1.rds, D11_COVID2_rep1.rds, D11_COVID2_rep2.rds](https://figshare.com/projects/T_helper_subsets_Kriukova_et_al_/173466) from effector-memory CD4 T cells in D11. These are rds files containing Seurat objects. Put these rds files into the outs/scRNAseq folder.    
 
 d) Always work from the project folder (Th_kriukova)
 

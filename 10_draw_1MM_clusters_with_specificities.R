@@ -147,27 +147,31 @@ df_antigen <- data.frame(meta.antigen, antigen_names, meta.colors)
 
 
 
-read_tsv("outs/identified_clones/filtered_clones/pogorelyy2022.cdr3aa-v-j-1mm.txt") %>% 
-  filter(str_detect(.$meta.best_HLA_assoc, pattern = pattern_hla)) %>% 
-  select(cdr3aa, v, j, meta.MIRA_pool_source) %>% 
+read_tsv(here("outs", "identified_clones", "filtered_clones", "pogorelyy2022.cdr3aa-v-j-1mm.txt")) %>% 
+  filter(str_detect(.$meta.best_HLA_assoc, pattern = pattern_hla)) %>%
+  filter((PBMCtp01_1 + PBMCtp01_2)/2 >= 3 |
+           (PBMCtp03_1 + PBMCtp03_2)/2 >= 3 |
+           (PBMCtp08_1 + PBMCtp08_2)/2 >= 3) %>% #filter only clones having at least 3 UMIs in mean_count in vax / covid1 /covid2 timepoints
+  select(cdr3aa, v, j, meta.MIRA_pool_source) %>%
   left_join(df_antigen, by = c("meta.MIRA_pool_source" = "antigen_names")) %>%
-  select(cdr3aa, v, j, meta.antigen, meta.colors) %>%
-  distinct -> pogorelyy2022
+  select(cdr3aa, v, j, meta.antigen, meta.colors) %>% distinct -> pogorelyy2022
 
-read_tsv("outs/identified_clones/filtered_clones/TcellAssay.cdr3aa-cdr3nt-v-j.txt") %>% 
-  select(cdr3aa, v, j, meta.antigen) %>% 
+read_tsv(here("outs", "identified_clones", "filtered_clones", "TcellAssay.cdr3aa-cdr3nt-v-j.txt")) %>% 
   left_join(df_antigen, by = "meta.antigen") %>%
-  select(cdr3aa, v, j, meta.antigen, meta.colors) %>%
-  distinct -> TcellAssay
+  select(cdr3aa, v, j, meta.antigen, meta.colors) %>% distinct -> TcellAssay
 
-read_tsv("outs/identified_clones/filtered_clones/vdjdb.cdr3aa-v-j-1mm.txt") %>% 
+read_tsv(here("outs", "identified_clones", "filtered_clones", "vdjdb.cdr3aa-v-j-1mm.txt")) %>%
   filter(meta.species == "HomoSapiens") %>%
   filter(meta.antigen.species == "SARS-CoV-2") %>% 
   filter(str_detect(.$`meta.mhc.a`, pattern = pattern_hla) | str_detect(.$`meta.mhc.b`, pattern = pattern_hla)) %>% #filter only patient's mhc
-  select(cdr3aa, v, j, meta.antigen.gene) %>% 
-  left_join(df_antigen, by = c("meta.antigen.gene" = "antigen_names")) %>% 
-  select(cdr3aa, v, j, meta.antigen, meta.colors) %>%
-  distinct -> vdjdb
+  filter((PBMCtp01_1 + PBMCtp01_2)/2 >= 3 |
+           (PBMCtp03_1 + PBMCtp03_2)/2 >= 3 |
+           (PBMCtp08_1 + PBMCtp08_2)/2 >= 3) %>% #filter only clones having at least 3 UMIs in mean_count in vax / covid1 /covid2 timepoints
+  filter(cdr3aa != "CASSETSGSTDTQYF") %>% # filter out irrelevant clone (selected based on very high frequency even before covid at tp00)
+  left_join(df_antigen, by = c("meta.antigen.gene" = "antigen_names")) %>%
+  select(cdr3aa, v, j, meta.antigen, meta.colors) %>% distinct -> vdjdb
+
+
 
 neighbors %>%
   #left_join(all_clones, by = c("meta.query" = "cdr3aa", "v", "j")) %>%

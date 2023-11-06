@@ -1,7 +1,7 @@
 # This is a pipeline script which calls the analysis scripts
 library(here)
 library(pals)
-
+library(tidyverse)
 
 #1 (Start from here to analyze raw data)
 ngs_directory <- here::here("data", "ngs") #locate the folder with ngs data
@@ -87,8 +87,8 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 #14
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
 
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -105,8 +105,9 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 #15
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
 folder_with_gating_results <- here("data", "gating_V2")
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -130,8 +131,8 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 
 #17
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -148,8 +149,8 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 
 #18
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -170,8 +171,8 @@ path_to_query <- c(here("outs", "scRNAseq", "D11_COVID1.rds"),
                    here("outs", "scRNAseq", "D11_COVID2_rep1.rds"),
                    here("outs", "scRNAseq", "D11_COVID2_rep2.rds"))
 
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -189,8 +190,8 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
 path_to_query <- here("outs", "scRNAseq", "query_scRNA2.rds")
 
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -209,8 +210,8 @@ rm(list = ls(all.names = TRUE)) #will clear all objects
 #22
 path_to_intgr_seurat <- here("outs", "scRNAseq", "full_reference_return_model.rds")
 
-color_code <- data.frame("number" = as.character(0:15), "colors" = alphabet2()[1:16]) %>%
-  mutate(colors = case_when(number == "8" ~ "red",
+color_code <- data.frame("number" = as.character(0:15), "colors" = kelly()[c(22, 9, 11, 6, 8, 12, 21, 10, 5, 7, 13, 14, 19, 3, 17, 18)]) %>%
+  mutate(colors = case_when(number == "9" ~ "azure2",
                             TRUE ~ colors))
 
 annotation_table <-  data.frame("number" = as.character(0:15),
@@ -219,4 +220,6 @@ annotation_table <-  data.frame("number" = as.character(0:15),
                                              "CentMem", "Tfh", "Naive_IFN_response", "SelfStopping",
                                              "EffMem_Th2a", "EffMem_IFN_response", "Temra_cytotoxic_Th1", "Cycling"))
 
+source("22_IFNresponse_supplementaryFigure.R") 
+rm(list = ls(all.names = TRUE)) #will clear all objects
 

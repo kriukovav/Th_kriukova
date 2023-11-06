@@ -1,3 +1,4 @@
+library(Seurat)
 library(tidyverse)
 
 # data input - collect all the sets of responding clones -------------------
@@ -72,8 +73,31 @@ distinct_clonotypes %>%
   mutate(donor_id = "D11") %>%
   relocate(clonotype_id_number, .before = cdr3aa) -> list_of_SarsCoV2_specific_clones_v2
 
-write_tsv(list_of_SarsCoV2_specific_clones_v2, here::here("outs", "identified_clones", "filtered_clones", "supplementary_table_for_paper.tsv"))
+#write_tsv(list_of_SarsCoV2_specific_clones_v2, here::here("outs", "identified_clones", "filtered_clones", "supplementary_table_for_paper.tsv"))
   
+
+# add alpha chain data where possible -------------------------------------
+
+query <- map(path_to_query, function(x) read_rds(x)) # upload scRNA-Seq files from D11, to search for the matched alpha chains
+
+map(query, function(x){
+  x[[]] %>%
+    inner_join(list_of_SarsCoV2_specific_clones_v2, by = c("TRB_cdr3aa" = "cdr3aa", "TRBV_gene" = "v", "TRBJ_gene" = "j")) %>%
+    select(TRB_cdr3aa, TRBV_gene, TRBJ_gene, TRA_cdr3aa, TRAV_gene, TRAJ_gene)
+}) %>%
+  bind_rows() %>%
+  drop_na() %>%
+  distinct() %>%
+  mutate(matched_TRA_chain = paste(TRA_cdr3aa, TRAV_gene, TRAJ_gene, sep = "_")) %>%
+  group_by(TRB_cdr3aa, TRBV_gene, TRBJ_gene) %>%
+  summarise(matched_TRA_chain = paste(matched_TRA_chain, collapse = ";")) -> matched_alpha # matching based on paired cdr3aa+V+J TCR clones in scRNA-Seq data
+
+list_of_SarsCoV2_specific_clones_v2 %>%
+  left_join(matched_alpha, by = c("cdr3aa" = "TRB_cdr3aa", "v" = "TRBV_gene", "j" = "TRBJ_gene")) -> list_of_SarsCoV2_specific_clones_v3
+
+write_tsv(list_of_SarsCoV2_specific_clones_v3, here::here("outs", "identified_clones", "filtered_clones", "supplementary_table_for_paper.tsv"))
+  
+
 
 
 

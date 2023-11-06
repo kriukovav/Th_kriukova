@@ -1,5 +1,7 @@
 library(tidyverse)
 library(patchwork)
+library(here)
+library(Seurat)
 
 
 intgr <- read_rds(path_to_intgr_seurat)
@@ -67,5 +69,24 @@ ggsave(here("outs", "scRNAseq", "figures", "IFNscatterplots.pdf"), dpi = 600, bg
 
 
 
+# apply stat test ---------------------------------------------------------
+
+data %>%
+  filter(Subset %in% c("EffMem_IFN_response")) -> data_aov
+
+aov(data_aov$proportion ~ data_aov$Status_on_day_collection_summary) -> model_aov
+
+summary(model_aov) %>% capture.output() %>% write_lines(here("outs", "anova_summary_Effmem_IFN_response.txt"))
+TukeyHSD(model_aov) %>% broom::tidy() %>% filter(adj.p.value < 0.05) %>% write_tsv(here("outs", "TukeyHSD_Effmem_IFN_response.txt")) 
+  
+
+
+data %>%
+  filter(Subset %in% c("Naive_IFN_response")) -> data_aov
+
+aov(data_aov$proportion ~ data_aov$Status_on_day_collection_summary) -> model_aov
+
+summary(model_aov) %>% capture.output() %>% write_lines(here("outs", "anova_summary_Naive_IFN_response.txt"))
+TukeyHSD(model_aov) %>% broom::tidy() %>% filter(adj.p.value < 0.05) %>% write_tsv(here("outs", "TukeyHSD_Naive_IFN_response.txt")) 
 
 

@@ -189,12 +189,18 @@ ggnetwork_combined %>%
 plot_data$meta.colors.pogorelyy2022[is.na(plot_data$meta.colors.pogorelyy2022)] <- "grey90"
 plot_data$meta.colors.vdjdb[is.na(plot_data$meta.colors.vdjdb)] <- "grey90"
 plot_data$meta.colors.TcellAssay[is.na(plot_data$meta.colors.TcellAssay)] <- "grey90"
+  
+plot_data <- plot_data %>%
+  mutate(meta.colors.database = case_when(meta.colors.pogorelyy2022 == "grey90" & meta.colors.vdjdb == "grey90" ~ "grey90",
+                                          meta.colors.pogorelyy2022 == "grey90" & meta.colors.vdjdb != "grey90" ~ .$meta.colors.vdjdb,
+                                          meta.colors.pogorelyy2022 != "grey90" & meta.colors.vdjdb == "grey90" ~ .$meta.colors.pogorelyy2022,
+                                          meta.colors.pogorelyy2022 == meta.colors.vdjdb ~ .$meta.colors.pogorelyy2022)) # I created a single column meta.colors.database to unite vdjdb and pogorelyy2022-based TCR specificities into one parameters
 
 plot_data %>%
   ggplot(aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_edges()+
-  geom_nodes(aes(color = meta.colors.vdjdb), shape = 21, stroke = 1, alpha = 0.7,  size = 2) +
-  geom_nodes(aes(color = meta.colors.pogorelyy2022), shape = 21, stroke = 1, alpha = 0.7,  size = 1.3) +
+  geom_nodes(color = "grey90", shape = 21, stroke = 1, alpha = 0.7,  size = 2) + #the outer circle on the plot encodes specificities identified based on TCR repertoire longitudinal tracking. However, as long as we gain no information about TCR specificities in this assay, we simply draw all circles grey
+  geom_nodes(aes(color = meta.colors.database), shape = 21, stroke = 1, alpha = 0.7,  size = 1.3) +
   geom_nodes(aes(color = meta.colors.TcellAssay), alpha = 0.7,  size = 0.9) +
   scale_color_identity(labels = unique(df_antigen$meta.antigen), breaks = unique(df_antigen$meta.colors), guide = "legend") +
   theme_void() +
